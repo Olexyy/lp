@@ -17,12 +17,8 @@ var io = require('socket.io')(http, {});
 const lpNs = '/lp';
 const lp = io.of(lpNs);
 const lpApp = {
-    messages: {},
-    announcements: {
-        culture: {},
-        medicine: {},
-        business: {},
-    },
+    messages: [],
+    announcements: [],
     topics: {
         culture: 'culture',
         medicine: 'medicine',
@@ -34,8 +30,11 @@ lp.on('connect', function(socket) {
     socket.on('error', e => {
         console.log('socket error');
     });
-    socket.on('disconnect', function() {
+    socket.on('disconnect', () => {
         console.log('socket disconnect');
+    });
+    socket.on('liveness', () => {
+        console.log('socket is live');
     });
     socket.on('status', () => {
         const userRooms = Object.keys(lp.adapter.sids[socket.id]);
@@ -55,16 +54,20 @@ lp.on('connect', function(socket) {
             if (!Array.isArray(rooms)) {
                 rooms = [rooms];
             }
-            let announcement = {};
-            rooms.forEach(room => {
-                announcement = Object.assign(announcement, lpApp.announcements[room]);
+            let announcements = [];
+            lpApp.announcements.forEach(item => {
+                let include = rooms.filter(value => item.topics.includes(value));
+                if (include.length) {
+                    announcements.push(item);
+                    // todo implenet skip / take functions
+                }
             });
-            lp.to(socket.id).emit('join', {
+            lp.to(socket.id).emit('status', {
                 topics: lpApp.topics,
                 rooms: userRooms,
-                announcements: announcement
+                announcements: announcements
             });
-            console.log('socket join');
+            console.log('socket join complete');
         });
     });
     socket.on('leave',  room => {
@@ -83,7 +86,7 @@ lp.on('connect', function(socket) {
             name: mes.name,
             author: socket.id,
             time: new Date().getTime(),
-            topics: {}
+            topics: mes.topics || [],
         };
         const userRooms = Object.keys(lp.adapter.sids[socket.id]);
         userRooms.shift();
@@ -93,7 +96,7 @@ lp.on('connect', function(socket) {
             delivery = delivery.to(room);
             message.topics[room] = room;
         });
-        lpApp.messages[message.time] = message;
+        lpApp.announcements.unshift(message);
         delivery.emit('announcement', message);
     });
     socket.on('message', (mes) => {
@@ -102,7 +105,7 @@ lp.on('connect', function(socket) {
             name: mes.name,
             author: socket.id,
             time: new Date().getTime(),
-            topics: {}
+            topics: mes.topics || [],
         };
         const userRooms = Object.keys(lp.adapter.sids[socket.id]);
         userRooms.shift();
@@ -112,7 +115,7 @@ lp.on('connect', function(socket) {
             delivery = delivery.to(room);
             message.topics[room] = room;
         });
-        lpApp.messages[message.time] = message;
+        lpApp.messages.unshift(message);
         delivery.emit('message', message);
     });
 });

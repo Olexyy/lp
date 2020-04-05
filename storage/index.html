@@ -45,64 +45,44 @@
                   Join to discussion by topic.
                 </div>
                 <div class="mdl-card__actions mdl-card--border"></div>
+                <div id="topics_wrapper" class="mdl-grid mdl-cell mdl-cell--12-col"></div>
                 <div class="mdl-grid mdl-cell mdl-cell--12-col">
-                  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-cell mdl-cell--12-col">
-                    <input class="mdl-textfield__input" type="text" id="message" name="message">
-                    <label class="mdl-textfield__label" for="message">Message...</label>
-                  </div>
-                </div>
-                <div id="cards_wrapper" class="mdl-grid mdl-cell mdl-cell--12-col">
-                  <button data-value="0.5" class="mdl-button mdl-card-pocker-card mdl-shadow--2dp mdl-cell mdl-cell--1-col">
-                    1/2
-                  </button>
-                  <button data-value="1" class="mdl-button mdl-card-pocker-card mdl-shadow--2dp mdl-cell mdl-cell--1-col">
-                    1
-                  </button>
-                  <button data-value="2" class="mdl-button mdl-card-pocker-card mdl-shadow--2dp mdl-cell mdl-cell--1-col">
-                    2
-                  </button>
-                  <button data-value="3" class="mdl-button mdl-card-pocker-card mdl-shadow--2dp mdl-cell mdl-cell--1-col">
-                    3
-                  </button>
-                  <button data-value="5" class="mdl-button mdl-card-pocker-card mdl-shadow--2dp mdl-cell mdl-cell--1-col">
-                    5
-                  </button>
-                  <button data-value="8" class="mdl-button mdl-card-pocker-card mdl-shadow--2dp mdl-cell mdl-cell--1-col">
-                    8
-                  </button>
-                  <button data-value="13" class="mdl-button mdl-card-pocker-card mdl-shadow--2dp mdl-cell mdl-cell--1-col">
-                    13
-                  </button>
-                  <button data-value="20" class="mdl-button mdl-card-pocker-card mdl-shadow--2dp mdl-cell mdl-cell--1-col">
-                    20
-                  </button>
-                  <button data-value="40" class="mdl-button mdl-card-pocker-card mdl-shadow--2dp mdl-cell mdl-cell--1-col">
-                    40
-                  </button>
-                  <button data-value="100" class="mdl-button mdl-card-pocker-card mdl-shadow--2dp mdl-cell mdl-cell--1-col">
-                    100
-                  </button>
-                  <button data-value="?" class="mdl-button mdl-card-pocker-card mdl-shadow--2dp mdl-cell mdl-cell--1-col">
-                    ?
-                  </button>
-                  <button data-value="coffe" class="mdl-button mdl-card-pocker-card mdl-shadow--2dp mdl-cell mdl-cell--1-col">
-                      <span class="material-icons">
-                        free_breakfast
-                      </span>
-                  </button>
-                </div>
-                <div class="mdl-grid mdl-cell mdl-cell--12-col">
-                  <table id="table" class="mdl-data-table mdl-js-data-table mdl-shadow--2dp mdl-cell mdl-cell--12-col">
+                  <table id="table_messages" class="mdl-data-table mdl-js-data-table mdl-shadow--2dp mdl-cell mdl-cell--6-col">
                     <thead>
                       <tr>
-                        <th class="width-fixed-50">№</th>
-                        <th class="width-minus-100">Name</th>
-                        <th class="width-fixed-50">Vote</th>
+                        <th class="width-fixed-50">Message stream</th>
+                        <th class="width-fixed-50">Author</th>
+                        <th class="width-minus-100">Text</th>
                       </tr>
                     </thead>
-                    <tbody id="table_body">
+                    <tbody id="table_messages_body">
                     </tbody>
                   </table>
+                  <table id="table_announcements" class="mdl-data-table mdl-js-data-table mdl-shadow--2dp mdl-cell mdl-cell--6-col">
+                    <thead>
+                      <tr>
+                        <th class="width-fixed-50">Announcement stream</th>
+                        <th class="width-fixed-50">Author</th>
+                        <th class="width-minus-100">Text</th>
+                      </tr>
+                    </thead>
+                    <tbody id="table_announcements_body">
+                    </tbody>
+                  </table>
+                </div>
+                <div class="mdl-grid mdl-cell mdl-cell--12-col">
+                  <div class="mdl-grid mdl-cell mdl-cell--6-col">
+                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-cell mdl-cell--12-col">
+                      <input class="mdl-textfield__input" type="text" id="message" name="message">
+                      <label class="mdl-textfield__label" for="message">Message...</label>
+                    </div>
+                  </div>
+                  <div class="mdl-grid mdl-cell mdl-cell--6-col">
+                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-cell mdl-cell--12-col">
+                      <input class="mdl-textfield__input" type="text" id="announcement" name="announcement">
+                      <label class="mdl-textfield__label" for="announcement">Announcement...</label>
+                    </div>
+                  </div>
                 </div>
                 <div class="mdl-card__actions mdl-card--border">
                   <a id="change_name" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
@@ -113,10 +93,9 @@
                   <!--button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
                     <i class="material-icons">share</i>
                   </button-->
-                  <span id="timer"></span>
-                  <button id="discuss" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+                  <!--button id="discuss" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
                     Start discussion
-                  </button>
+                  </button-->
                 </div>
               </div>
             </div>
