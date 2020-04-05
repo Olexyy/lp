@@ -34,9 +34,9 @@ jQuery(document).ready(function($) {
                 socket.emit('message', {
                     text: $(this).val(),
                     name: storeObject.name,
-                    topics: lastSync.rooms,
+                    topics: storeObject.topics,
                 });
-                $this.val('').trigger('change');
+                $this.val('').parent().removeClass('is-dirty').removeClass('is-focuced');
             }
         }
     });
@@ -48,9 +48,9 @@ jQuery(document).ready(function($) {
                 socket.emit('announcement', {
                     text: $(this).val(),
                     name: storeObject.name,
-                    topics: lastSync.rooms,
+                    topics: storeObject.topics,
                 });
-                $this.val('').trigger('change');
+                $this.val('').parent().removeClass('is-dirty').removeClass('is-focuced');
             }
         }
     });
@@ -67,7 +67,6 @@ jQuery(document).ready(function($) {
                 nameMarker.text(val);
                 dialogName.close();
                 socket.emit('status');
-                $this.val('').trigger('change');
             }
         }
     });
@@ -114,7 +113,7 @@ jQuery(document).ready(function($) {
         // If we recieve announcements in status, fill out them.
         if (data.hasOwnProperty('announcements')) {
             tableAnnouncementItems.empty();
-            data.announcements.reverse().forEach(item => {
+            data.announcements.forEach(item => {
                 const tr =  $("<tr></tr>");
                 tr.append(
                     $('<td></td>').addClass('width-fixed-50').text(timeConverter(item.time))

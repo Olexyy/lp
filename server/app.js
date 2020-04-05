@@ -55,13 +55,16 @@ lp.on('connect', function(socket) {
                 rooms = [rooms];
             }
             let announcements = [];
+            // todo implenet skip / take functions
             lpApp.announcements.forEach(item => {
                 let include = rooms.filter(value => item.topics.includes(value));
+                console.log(JSON.stringify(item));
                 if (include.length) {
                     announcements.push(item);
-                    // todo implenet skip / take functions
                 }
             });
+            console.log(JSON.stringify(rooms));
+            console.log(announcements);
             lp.to(socket.id).emit('status', {
                 topics: lpApp.topics,
                 rooms: userRooms,
