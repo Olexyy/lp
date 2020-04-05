@@ -51,19 +51,14 @@ lp.on('connect', function(socket) {
             console.log('joining: ' + rooms);
             const userRooms = Object.keys(lp.adapter.sids[socket.id]);
             userRooms.shift();
-            if (!Array.isArray(rooms)) {
-                rooms = [rooms];
-            }
             let announcements = [];
-            // todo implenet skip / take functions
+            // Todo implenet skip / take functions.
             lpApp.announcements.forEach(item => {
-                let include = rooms.filter(value => item.topics.includes(value));
-                console.log(JSON.stringify(item));
+                let include = userRooms.filter(value => item.topics.includes(value));
                 if (include.length) {
                     announcements.push(item);
                 }
             });
-            console.log(JSON.stringify(rooms));
             console.log(announcements);
             lp.to(socket.id).emit('status', {
                 topics: lpApp.topics,
