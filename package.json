@@ -1,0 +1,29 @@
+{
+  "name": "ppok",
+  "version": "0.0.1",
+  "description": "Planning pocker",
+  "main": "./server/app.js",
+  "scripts": {
+    "start": "cd server && node app.js"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.1"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "socket.io": "^2.2.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Olexyy/ppok.git"
+  },
+  "keywords": [
+    "planning pocker"
+  ],
+  "author": "Olexyy/ppok",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Olexyy/ppok/issues"
+  },
+  "homepage": "https://github.com/Olexyy/ppok#readme"
+}

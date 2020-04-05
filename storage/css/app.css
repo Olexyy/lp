@@ -1,0 +1,31 @@
+header.mdl-layout__header.is-casting-shadow {
+    background-color: #636b6f;
+}
+
+body {
+    background-color: rgba(0,0,0,.06);
+}
+
+.mdl-card-pocker-card {
+    height: 48px;
+    width: 148px;
+    padding: 8px 16px;
+    color: #636b6f;
+    text-align: center;
+    vertical-align: middle;
+    font-size: x-large;
+}
+
+.width-fixed-50 {
+    width: 50px;
+}
+
+.width-minus-100 {
+    text-align: center !important;
+    width: calc(100%-100px);
+}
+
+.wait-throbber {
+    width: 30px;
+    height: 30px;
+}
