@@ -18,6 +18,11 @@ const lpNs = '/lp';
 const lp = io.of(lpNs);
 const lpApp = {
     messages: {},
+    announcements: {
+        culture: {},
+        medicine: {},
+        business: {},
+    },
     topics: {
         culture: 'culture',
         medicine: 'medicine',
@@ -26,8 +31,6 @@ const lpApp = {
 };
 lp.on('connect', function(socket) {
     console.log('socket connected');
-    const realId = socket.id.replace(`${lpNs}#`, '');
-    console.log(Object.keys(io.sockets.adapter.sids[realId]).shift());
     socket.on('error', e => {
         console.log('socket error');
     });
@@ -35,7 +38,7 @@ lp.on('connect', function(socket) {
         console.log('socket disconnect');
     });
     socket.on('status', () => {
-        const userRooms = Object.keys(io.sockets.adapter.sids[realId]);
+        const userRooms = Object.keys(lp.adapter.sids[socket.id]);
         userRooms.shift();
         lp.to(socket.id).emit('status', {
             topics: lpApp.topics,
@@ -45,24 +48,53 @@ lp.on('connect', function(socket) {
     });
     // May be array.
     socket.on('join', rooms => {
-        socket.join(rooms);
-        const userRooms = Object.keys(io.sockets.adapter.sids[realId]);
-        userRooms.shift();
-        lp.to(socket.id).emit('status', {
-            topics: lpApp.topics,
-            rooms: userRooms,
+        socket.join(rooms, function(e) {
+            console.log('joining: ' + rooms);
+            const userRooms = Object.keys(lp.adapter.sids[socket.id]);
+            userRooms.shift();
+            if (!Array.isArray(rooms)) {
+                rooms = [rooms];
+            }
+            let announcement = {};
+            rooms.forEach(room => {
+                announcement = Object.assign(announcement, lpApp.announcements[room]);
+            });
+            lp.to(socket.id).emit('join', {
+                topics: lpApp.topics,
+                rooms: userRooms,
+                announcements: announcement
+            });
+            console.log('socket join');
         });
-        console.log('socket join');
     });
     socket.on('leave',  room => {
         socket.leave(room);
-        const userRooms = Object.keys(io.sockets.adapter.sids[realId]);
+        const userRooms = Object.keys(lp.adapter.sids[socket.id]);
         userRooms.shift();
         lp.to(socket.id).emit('status', {
             topics: lpApp.topics,
             rooms: userRooms,
         });
         console.log('socket leave');
+    });
+    socket.on('announcement', (mes) => {
+        message = {
+            text: mes.text,
+            name: mes.name,
+            author: socket.id,
+            time: new Date().getTime(),
+            topics: {}
+        };
+        const userRooms = Object.keys(lp.adapter.sids[socket.id]);
+        userRooms.shift();
+        console.log(userRooms);
+        let delivery = lp.to(socket.id);
+        userRooms.forEach(room => {
+            delivery = delivery.to(room);
+            message.topics[room] = room;
+        });
+        lpApp.messages[message.time] = message;
+        delivery.emit('announcement', message);
     });
     socket.on('message', (mes) => {
         message = {
@@ -72,7 +104,7 @@ lp.on('connect', function(socket) {
             time: new Date().getTime(),
             topics: {}
         };
-        const userRooms = Object.keys(io.sockets.adapter.sids[realId]);
+        const userRooms = Object.keys(lp.adapter.sids[socket.id]);
         userRooms.shift();
         console.log(userRooms);
         let delivery = lp.to(socket.id);

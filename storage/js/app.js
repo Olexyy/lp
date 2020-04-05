@@ -12,12 +12,15 @@ jQuery(document).ready(function($) {
     var nameItem = $('#name');
     var changeName = $("#change_name");
     var discussItem = $('#discuss');
-    var storeName = localStorage.getItem('pocker_name');
+    var nameMarker = $('#name_marker');
+    var storeNameKey = 'lp_name';
+    var storeName = localStorage.getItem(storeNameKey);
     var dialogName = document.getElementById('name_dialog');
     var dialogError = document.getElementById('error_dialog');
     var dialogStart = document.getElementById('start_dialog');
     var discuss = false;
     nameItem.val(storeName);
+    nameMarker.text(storeName);
     dialogPolyfill.registerDialog(dialogName);
     dialogPolyfill.registerDialog(dialogError);
     dialogPolyfill.registerDialog(dialogStart);
@@ -37,9 +40,11 @@ jQuery(document).ready(function($) {
         }
     });
     nameItem.on('blur', function() {
-        if ($(this).val()) {
-            localStorage.setItem('pocker_name', $(this).val());
-            socket.emit('update', room, 'name', $(this).val());
+        const val = $(this).val();
+        if (val) {
+            localStorage.setItem(storeNameKey, val);
+            storeName = val;
+            nameMarker.text(val);
             dialogName.close();
         }
     });
@@ -59,16 +64,16 @@ jQuery(document).ready(function($) {
         dialogError.showModal();
     });
     socket.on('status', function(data) {
-        discuss = data.discuss;
-        tableItems.empty();
         var ownId = socket.id;
-        var anyUnvoted = false;
         cardsWrapper.empty();
         Object.keys(data.topics).forEach(topic => {
             action = data.rooms.includes(topic) ? 'remove' : 'add';
             const el = $('<button></button>')
                 .addClass('mdl-button mdl-card-pocker-card mdl-shadow--2dp mdl-cell mdl-cell--1-col')
                 .text(topic).data('action', action).data('target', topic);
+            if (action == 'remove') {
+                el.addClass('mdl-button--colored');
+            }
             el.on('click', function() {
                 const $this = $(this);
                 if ($this.data('action') === 'add') {
@@ -79,36 +84,33 @@ jQuery(document).ready(function($) {
             });
             cardsWrapper.append(el);
         });
-        var cards = $('.mdl-card-pocker-card');
-        cards.prop('disabled', false);
-        if (data.players[ownId].vote !== '') {
-            cards.each(function(){
-                if ($(this).data('value') === data.players[ownId].vote) {
-                    $(this).prop('disabled', true);
-                }
-            });
-        }
-        // If discuss we need to show statistics if everybody voted.
-        if (discuss) {
-            // Negotiate any unvoted if in discuss
-            Object.keys(data.players).forEach(function(id) {
-                if(data.players[id].vote == '') {
-                    anyUnvoted = true;
-                }          
-            });
+        if (data.hasOwnProperty('announcements')) {
+            // handle announcement + announcement event
         }
     });
     socket.on('message', function(message) {
         const tr =  $("<tr></tr>");
         tr.append(
-            $('<td></td>').addClass('width-fixed-50').text(message.time)
+            $('<td></td>').addClass('width-fixed-50').text(timeConverter(message.time))
         );
         tr.append(
             $('<td></td>').addClass('width-fixed-50').text(message.name)
-        )
+        );
         tr.append(
             $('<td></td>').addClass('width-minus-100').html(message.text)
-        )
+        );
         tableItems.append(tr);
     });
+    function timeConverter(timestamp){
+        var a = new Date(timestamp);
+        var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+        var year = a.getFullYear();
+        var month = months[a.getMonth()];
+        var date = a.getDate();
+        var hour = a.getHours();
+        var min = a.getMinutes();
+        var sec = a.getSeconds();
+        var time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec ;
+        return time;
+      }
 });
