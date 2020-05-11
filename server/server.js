@@ -1,4 +1,3 @@
-const App        = require('./App.js');
 const Express    = require('express');
 const path       = require('path');
 const port       = process.env.PORT || 3000;
@@ -6,6 +5,7 @@ const express    = Express();
 const fs         = require('fs');
 var http         = require('http').createServer(express);
 const storage    = path.join(__dirname, "..", 'storage');
+const App        = require('./app.js');
 
 /**
  * WebSocket Configuration
