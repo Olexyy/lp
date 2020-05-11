@@ -72,9 +72,19 @@ lp.on('connect', function(socket) {
         socket.leave(room);
         const userRooms = Object.keys(lp.adapter.sids[socket.id]);
         userRooms.shift();
+        let announcements = [];
+        // Todo implenet skip / take functions.
+        lpApp.announcements.forEach(item => {
+            let include = userRooms.filter(value => item.topics.includes(value));
+            if (include.length) {
+                announcements.push(item);
+            }
+        });
+        console.log(announcements);
         lp.to(socket.id).emit('status', {
             topics: lpApp.topics,
             rooms: userRooms,
+            announcements: announcements
         });
         console.log('socket leave');
     });

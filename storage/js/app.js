@@ -163,6 +163,9 @@ jQuery(document).ready(function($) {
         var hour = a.getHours();
         var min = a.getMinutes();
         var sec = a.getSeconds();
+        if (sec <= 9) sec = `0${sec}`;
+        if (min <= 9) min = `0${min}`;
+        if (hour <= 9) hour = `0${hour}`;
         var time = date + '/' + month + '/' + year + ' ' + hour + ':' + min + ':' + sec;
         return time;
     }
