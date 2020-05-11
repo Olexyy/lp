@@ -7,6 +7,7 @@ class App {
             culture: 'culture',
             medicine: 'medicine',
             business: 'business',
+            it: 'it',
         };
         this.namespace = '/lp';
         this.io = io;
