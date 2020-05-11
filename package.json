@@ -4,7 +4,7 @@
   "description": "Planning pocker",
   "main": "./server/app.js",
   "scripts": {
-    "start": "cd server && node app.js"
+    "start": "cd server && node server.js"
   },
   "devDependencies": {
     "nodemon": "^1.19.1"
