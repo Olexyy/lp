@@ -3,19 +3,94 @@
         <link rel="icon" type="image/png" href="assets/logo.png" sizes="192x192">
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <title>[TMLP] TM Live platform</title>
+        <title>Introduction</title>
+        <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
+        <link rel="stylesheet" href="/css/app.css">
     </head>
     <body>
-      <p>Lorem ipsum integer ut donec integer ornare eu enim proin cursus. Pellentesque sed eu pellentesque commodo et elementum vitae at a, pharetra sit at lectus. Lectus sapien vitae ligula, gravida eu donec enim quisque maecenas nibh mauris. Morbi, pellentesque, quam sed integer pellentesque ipsum amet urna lectus ligula a sit risus eget tempus, ligula non adipiscing: rutrum magna adipiscing. Et metus integer curabitur donec elementum risus nam sit vivamus commodo ligula.</p>
-
-      <p>Ligula ultricies porta metus duis tellus integer non justo vivamus donec mauris adipiscing eget nam fusce vulputate commodo. Amet, proin gravida pellentesque curabitur sapien in, adipiscing sodales adipiscing eu. Orci pharetra et mauris urna sapien lectus urna tempus, ultricies morbi rutrum commodo ligula orci sodales diam auctor. Ligula arcu curabitur pellentesque, eu ornare, vivamus molestie, morbi non molestie. Duis et, porttitor, metus, diam, odio fusce, massa vitae — nam eros, cursus, elementum, tempus, at quam vivamus. Arcu at nibh at fusce at — congue molestie congue sit leo auctor risus tellus ultricies maecenas congue non. Nam, commodo vivamus at odio, molestie sodales, elementum quam nec pellentesque, proin lectus urna molestie, porta molestie vulputate rutrum diam, gravida quisque, malesuada sed.</p>
-
-      <p>Et nibh duis at, sagittis morbi ultricies ligula fusce nec pharetra leo metus diam urna metus integer diam porttitor. Lectus curabitur commodo non gravida sapien duis sit nam, vulputate orci, urna in porta ligula ultricies metus duis integer enim, vitae nibh bibendum nam. Vitae curabitur sed nulla odio malesuada in ultricies tempus, urna commodo a mattis sagittis, justo eros, ligula orci proin — metus sagittis molestie sodales. Donec, elementum sodales rutrum integer vitae ipsum gravida mattis sapien molestie metus orci eros, eget elementum, congue sagittis tempus bibendum. Sodales sapien rutrum ultricies quisque bibendum elementum vivamus diam tempus ipsum integer: massa a molestie cursus donec quam, a elementum maecenas ut eros, ligula.</p>
-
-      <p>Massa sapien vulputate ligula lectus urna gravida eros sagittis, nam mauris rutrum ut metus. Non gravida: arcu rutrum metus lorem proin eros amet a nam orci. Maecenas, urna mattis arcu risus magna, vivamus — lorem, diam lorem arcu, diam sed, ornare quam. Et sit in orci ornare mauris quisque, magna nibh massa tellus lectus pellentesque malesuada ligula, in proin. Eget, magna morbi quam nibh, mattis auctor nibh orci sagittis eros commodo ornare duis proin urna nec vulputate — quam ornare amet quam metus vivamus, proin. Ligula vivamus, amet vitae cursus, rutrum gravida nibh adipiscing — duis risus quisque integer malesuada quisque, enim integer: lectus sapien, vivamus. Eros sodales porttitor, quam, sed pellentesque mauris justo metus molestie porttitor fusce. Arcu quisque, sem, enim nam elementum morbi ornare lectus risus sem et amet pharetra porta: ut sagittis.</p> 
-
-      <p>Vitae integer, bibendum, commodo, duis sapien tempus congue lorem curabitur elementum ipsum auctor curabitur proin at nulla sed pellentesque sapien tempus maecenas donec. Lorem bibendum proin mauris amet sit odio enim quisque, bibendum pellentesque. Tempus vulputate nam quam leo: porttitor quisque porta quisque, ultricies lectus vitae. Gravida adipiscing nec pellentesque auctor ut risus rutrum maecenas non vulputate — in eu tempus vivamus sodales sagittis bibendum magna. Diam commodo proin vivamus odio: morbi a auctor congue magna ipsum gravida.</p>
-
-      <iframe src="/" style="width: 500px; position:fixed; right: 0; bottom: 0; z-index: 100;" frameBorder="0"></iframe>
+      <main class="mdl-layout__content">
+        <div class="page-content">
+          <div class="mdl-grid">
+            <div class="demo-card-wide mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col">
+              <div class="mdl-card__title">
+                <h4>Introduction:</h4>
+              </div>
+              <div>
+                <ul>
+                  <li>
+                    instant, real-time connection (rtc) with user-agent, via web socket, not http;
+                  </li>
+                  <li>
+                    over 95% of browsers support web socket now;
+                  </li>
+                  <li>
+                    this should still work with inactive tab/window;
+                  </li>
+                  <li>
+                    send notifications to all active / or users who will join;
+                  </li>
+                  <li>
+                    send notifications to users, defined by topics in channels;
+                  </li>
+                  <li>
+                    topic channels defined by profile or maybe configurable;
+                  </li>
+                  <li>
+                    possibilities:
+                    (our ding/pro/tekhus backend can push some messages as well as some event happen)
+                    <ul>
+                      <li>notifications
+                        <ul>
+                          <li>
+                            new articles users are interested,
+                          </li>
+                          <li>
+                            new jobs users are interested,
+                          </li>
+                          <li>
+                            comments in articles users are interested,
+                          </li>
+                          <li>
+                            announcements(free text or external content)
+                          </li>
+                        </ul>
+                      </li>
+                      <li>
+                        targeted feedbacks, surveys -> forms with options;
+                      </li>
+                      <li>
+                        chat (discussion) within community (has some drawbacks: need to take in account bots, spammers, words);
+                      </li>
+                      <li>
+                        more pesonalized support, direct chat with support service;
+                      </li>
+                    </ul>
+                  </li>
+                  <li>
+                    Steps for implementation:
+                    <ul>
+                      <li>
+                        define business poins where we need to use this technology;
+                      </li>
+                      <li>
+                        we can start whith a couple of basic topics;
+                      </li>
+                      <li>
+                        we could require permission for this, and user should grant it;
+                      </li>
+                      <li>
+                        this may be a little box in browser (iframe based) or/and separate page as reactive sinle page app;
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+      <iframe src="/" style="height: 500px; width: 500px; position:fixed; right: 0; bottom: 0; z-index: 100;" frameBorder="0"></iframe>
     </body>
 </html>
