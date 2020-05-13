@@ -5,6 +5,7 @@ const express    = Express();
 const http         = require('http').createServer(express);
 const storage    = path.join(__dirname, "..", 'storage');
 const App        = require('./app.js');
+const Video      = require('./video.js');
 
 /**
  * WebSocket Configuration
@@ -14,6 +15,7 @@ const io = require('socket.io')(http, {});
 * App backend socket.io implementation.
 */
 new App(io).bind();
+new Video(io).bind();
 /**
  * Storage.
  */
@@ -26,6 +28,9 @@ express.get('/', (req, res) => {
 });
 express.get('/embed', (req, res) => {
     res.sendFile(path.join(storage, `embed.html`));
+});
+express.get('/video', (req, res) => {
+    res.sendFile(path.join(storage, `video.html`));
 });
 /**
  * Start server.
