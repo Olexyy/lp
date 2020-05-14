@@ -10,7 +10,7 @@ const Video      = require('./video.js');
 /**
  * WebSocket Configuration
  */
-const io = require('socket.io')(http, {});
+const io = require('socket.io')(http, { 'perMessageDeflate': false });
 /**
 * App backend socket.io implementation.
 */

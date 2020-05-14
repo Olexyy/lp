@@ -1,19 +1,19 @@
-jQuery(document).ready(function($) {
-    const { RTCPeerConnection, RTCSessionDescription } = window;
-    peerConnection = new RTCPeerConnection();
-    navigator.getUserMedia(
-        { video: true, audio: true },
-        stream => {
-          const localVideo = document.getElementById("local-video");
-          if (localVideo) {
-            localVideo.srcObject = stream;
-          }
-          stream.getTracks().forEach(track => peerConnection.addTrack(track, stream));
-        },
-        error => {
-          console.warn(error.message);
+jQuery(document).ready(($) => {
+  AdapterJS.webRTCReady(isUsingPlugin => {
+    getUserMedia({ video: true, audio: true },
+      stream => {
+        const localVideo = document.getElementById("local-video");
+        if (localVideo) {
+          attachMediaStream(localVideo, stream);
         }
+        stream.getTracks().forEach(track => peerConnection.addTrack(track, stream));
+      },
+      error => {
+        console.warn(error.message);
+      }
     );
+
+    peerConnection = new RTCPeerConnection();
     peerConnection.ontrack = function({ streams: [stream] }) {
         const remoteVideo = document.getElementById("remote-video");
         if (remoteVideo) {
@@ -37,47 +37,7 @@ jQuery(document).ready(function($) {
         console.error('Socket disconnected');
     });
     socket.on('status', function(data) {
-        
-        updateUserList(Object.keys(data.list));
-
-        // storeObject.topics = data.rooms;
-        // localStorage.setItem(storeKey, JSON.stringify(storeObject));
-        // topicsWrapper.empty();
-        // Object.keys(data.topics).forEach(topic => {
-        //     action = data.rooms.includes(topic) ? 'remove' : 'add';
-        //     const el = $('<button></button>')
-        //         .addClass('mdl-button mdl-card-pocker-card mdl-shadow--2dp mdl-cell mdl-cell--2-col')
-        //         .text(topic).data('action', action).data('target', topic);
-        //     if (action == 'remove') {
-        //         el.addClass('mdl-button--colored');
-        //     }
-        //     el.on('click', function() {
-        //         const $this = $(this);
-        //         if ($this.data('action') === 'add') {
-        //             socket.emit('join', $this.data('target'));
-        //         } else {
-        //             socket.emit('leave', $this.data('target'));
-        //         }
-        //     });
-        //     topicsWrapper.append(el);
-        // });
-        // // If we recieve announcements in status, fill out them.
-        // if (data.hasOwnProperty('announcements')) {
-        //     tableAnnouncementItems.empty();
-        //     data.announcements.forEach(item => {
-        //         const tr =  $("<tr></tr>");
-        //         tr.append(
-        //             $('<td></td>').addClass('width-fixed-50').text(timeConverter(item.time))
-        //         );
-        //         tr.append(
-        //             $('<td></td>').addClass('width-fixed-50').text(item.name)
-        //         );
-        //         tr.append(
-        //             $('<td></td>').addClass('width-minus-100').html(item.text)
-        //         );
-        //         tableAnnouncementItems.append(tr);
-        //     });
-        //}
+      updateUserList(Object.keys(data.list));
     });
     function updateUserList(socketIds) {
         const activeUserContainer = $("#active-user-container");
@@ -93,15 +53,20 @@ jQuery(document).ready(function($) {
         userContainerEl.setAttribute("class", "active-user");
         userContainerEl.setAttribute("id", socketId);
         usernameEl.setAttribute("class", "username");
-        usernameEl.innerHTML = `Socket: ${socketId}`;
-        userContainerEl.appendChild(usernameEl);
-        userContainerEl.addEventListener("click", () => {
-          //unselectUsersFromList();
-          userContainerEl.setAttribute("class", "active-user active-user--selected");
-          const talkingWithInfo = document.getElementById("talking-with-info");
-          talkingWithInfo.innerHTML = `Talking with: "Socket: ${socketId}"`;
-          callUser(socketId);
-        }); 
+        if (socketId == socket.id) {
+          usernameEl.innerHTML = `Socket (you): ${socketId}`;
+        }
+        else {
+          usernameEl.innerHTML = `Socket: ${socketId}`;
+          userContainerEl.addEventListener("click", () => {
+            //unselectUsersFromList();
+            userContainerEl.setAttribute("class", "active-user active-user--selected");
+            const talkingWithInfo = document.getElementById("talking-with-info");
+            talkingWithInfo.innerHTML = `Talking with: "Socket: ${socketId}"`;
+            callUser(socketId);
+          });
+        }
+        userContainerEl.appendChild(usernameEl); 
         return userContainerEl;
     }
     
@@ -137,6 +102,13 @@ jQuery(document).ready(function($) {
         }
        });
 
+    function liveness() {
+      setTimeout(() =>{
+          socket.emit('liveness');
+          liveness();
+      }, 30000);
+    }
+    liveness();
     // socket.on('message', function(message) {
     //     const tr =  $("<tr></tr>");
     //     tr.append(
@@ -178,11 +150,5 @@ jQuery(document).ready(function($) {
     //     var time = date + '/' + month + '/' + year + ' ' + hour + ':' + min + ':' + sec;
     //     return time;
     // }
-    function liveness() {
-        setTimeout(() =>{
-            socket.emit('liveness');
-            liveness();
-        }, 30000);
-    }
-    liveness();
+  });
 });
